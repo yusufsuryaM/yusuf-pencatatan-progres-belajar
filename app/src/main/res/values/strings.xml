@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Study Progress Tracker</string>
-    <string name="stats_title">Weekly Stats</string>
-    <string name="weekly_progress">Weekly Progress</string>
-    <string name="minutes">minutes</string>
-    <string name="weekly_target_label">Weekly Target Minutes</string>
-    <string name="daily_average" translatable="false">Daily Average</string>
-    <string name="minutes_per_day">minutes/day</string>
-    <string name="daily_target_label">Daily Target Minutes</string>
-    <string name="back_to_home">Back to Home</string>
+    <string name="app_name" translatable="false">Pencatatan Progres Belajar</string>
+    <string name="stats_title" translatable="false">Statistik Mingguan</string>
+    <string name="weekly_progress" translatable="false">Weakly Progress</string>
+    <string name="minutes" translatable="false">Minutes</string>
+    <string name="weekly_target_label" translatable="false">Weekly Target Label</string>
+    <string name="daily_progress" translatable="false">Daily Progress</string>
+    <string name="minutes_per_day" translatable="false">Minutes/day</string>
+    <string name="daily_target_label" translatable="false">Daoly Target Label</string>
+    <string name="back_to_home" translatable="false">Back To Home</string>
 </resources>

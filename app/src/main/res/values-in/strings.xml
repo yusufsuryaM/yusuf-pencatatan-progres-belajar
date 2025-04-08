@@ -4,6 +4,7 @@
     <string name="weekly_progress" translatable="false">Progress Mingguan</string>
     <string name="minutes" translatable="false">menit</string>
     <string name="weekly_target_label" translatable="false">Target Menit Mingguan</string>
+    <string name="daily_progress" translatable="false">Progress Harian</string>
     <string name="minutes_per_day" translatable="false">menit/hari</string>
     <string name="daily_target_label" translatable="false">Target Menit Harian</string>
     <string name="back_to_home" translatable="false">Kembali ke Home</string>
