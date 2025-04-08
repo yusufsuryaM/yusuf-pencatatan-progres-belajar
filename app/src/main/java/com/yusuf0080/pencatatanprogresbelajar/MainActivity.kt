@@ -1,6 +1,5 @@
 package com.yusuf0080.pencatatanprogresbelajar
 
-import PencatatanProgresBelajarTheme
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
