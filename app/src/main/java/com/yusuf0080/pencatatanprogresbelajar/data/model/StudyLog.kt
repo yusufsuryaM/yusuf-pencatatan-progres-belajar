@@ -1,4 +1,7 @@
 package com.yusuf0080.pencatatanprogresbelajar.data.model
 
-class StudyLog {
-}
+data class StudyLog(
+    val id: Int,
+    val date: String,
+    val durationInMinutes: Int
+)
