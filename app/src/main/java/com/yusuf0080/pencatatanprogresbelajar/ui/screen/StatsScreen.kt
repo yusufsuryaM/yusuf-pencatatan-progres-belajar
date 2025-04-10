@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -62,15 +63,15 @@ fun StatsScreen(
     val durationHoursFormat = stringResource(R.string.duration_hours)
 
     // Format the durations using the pre-loaded strings
-    val formattedTotalDuration = remember(total) {
+    val formattedTotalDuration = rememberSaveable (total) {
         formatDuration(total, minutesText, durationHoursFormat, durationHoursMinutesFormat)
     }
 
-    val formattedWeeklyTarget = remember(weeklyTarget) {
+    val formattedWeeklyTarget = rememberSaveable (weeklyTarget) {
         formatDuration(weeklyTarget, minutesText, durationHoursFormat, durationHoursMinutesFormat)
     }
 
-    val formattedDailyTarget = remember(dailyTarget) {
+    val formattedDailyTarget = rememberSaveable (dailyTarget) {
         formatDuration(dailyTarget, minutesText, durationHoursFormat, durationHoursMinutesFormat)
     }
 
