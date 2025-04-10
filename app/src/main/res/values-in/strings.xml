@@ -8,4 +8,51 @@
     <string name="minutes_per_day">menit/hari</string>
     <string name="daily_target_label">Target Menit Harian</string>
     <string name="back_to_home">Kembali ke Home</string>
+
+    <!-- Duration formatting -->
+    <string name="duration_hours_minutes">%1$d jam %2$d menit</string>
+    <string name="duration_hours">%1$d jam</string>
+    <string name="duration_minutes_seconds">%1$d menit %2$d detik</string>
+
+    <!-- History Screen -->
+    <string name="history_title">Riwayat Belajar</string>
+    <string name="no_history">Belum ada riwayat belajar</string>
+    <string name="no_history_description">Belum ada data riwayat belajar yang tersedia</string>
+    <string name="history_list_title">Daftar Riwayat Belajar:</string>
+    <string name="history_list_description">Daftar sesi belajar</string>
+    <string name="date_duration_format">- Tanggal %1$s, durasi %2$d menit</string>
+    <string name="share_history">Bagikan Riwayat Belajar</string>
+    <string name="share_history_description">Tombol untuk membagikan riwayat belajar</string>
+    <string name="share_history_message">Total durasi belajar saya adalah %1$d menit.</string>
+    <string name="share_history_title">Bagikan Riwayat Belajar</string>
+    <string name="back_button_description">Tombol untuk kembali ke layar utama</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">Pencatatan Progres Belajar</string>
+    <string name="book_open_desc">Buku terbuka - sedang belajar</string>
+    <string name="book_closed_desc">Buku tertutup - sesi berhenti</string>
+    <string name="duration_format">Durasi Belajar: %1$s</string>
+    <string name="duration_description">Waktu belajar saat ini: %1$s</string>
+    <string name="start_learning">Mulai Belajar</string>
+    <string name="pause">Jeda</string>
+    <string name="reset">Atur Ulang</string>
+    <string name="save_session">Simpan Sesi Belajar</string>
+    <string name="save_session_description">Tombol simpan sesi belajar</string>
+    <string name="session_saved">Sesi belajar berhasil disimpan!</string>
+    <string name="no_duration">Belum ada durasi belajar yang dicatat</string>
+    <string name="share_progress">Bagikan Progres</string>
+    <string name="share_progress_description">Tombol bagikan progres belajar</string>
+    <string name="share_progress_message">Hari ini saya belajar selama %1$s!</string>
+    <string name="share_progress_title">Bagikan progres belajar</string>
+    <string name="view_history">Lihat Riwayat</string>
+    <string name="view_history_description">Navigasi ke halaman riwayat belajar</string>
+    <string name="view_stats">Lihat Statistik</string>
+    <string name="view_stats_description">Navigasi ke halaman statistik belajar</string>
+
+    <!-- TopBar -->
+    <string name="about_dialog_title">Tentang Aplikasi</string>
+    <string name="about_dialog_text">Aplikasi ini membantu kamu mencatat dan memantau progres waktu belajar harian serta mingguan.</string>
+    <string name="close">Tutup</string>
+    <string name="about_app">Tentang Aplikasi</string>
+    <string name="back">Kembali</string>
 </resources>

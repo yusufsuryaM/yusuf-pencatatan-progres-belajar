@@ -19,10 +19,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.yusuf0080.pencatatanprogresbelajar.R
 import com.yusuf0080.pencatatanprogresbelajar.data.model.StudyLog
 import com.yusuf0080.pencatatanprogresbelajar.navigation.Screen
 import com.yusuf0080.pencatatanprogresbelajar.ui.components.TopBar
@@ -32,10 +34,25 @@ fun HistoryScreen(navController: NavController, logs: List<StudyLog>) {
     val context = LocalContext.current
     val colorScheme = MaterialTheme.colorScheme
 
+    // Pre-load string resources
+    val historyTitle = stringResource(id = R.string.history_title)
+    val noHistory = stringResource(id = R.string.no_history)
+    val noHistoryDescription = stringResource(id = R.string.no_history_description)
+    val historyListTitle = stringResource(id = R.string.history_list_title)
+    val historyListDescription = stringResource(id = R.string.history_list_description)
+    val shareHistoryDescription = stringResource(id = R.string.share_history_description)
+    val shareHistory = stringResource(id = R.string.share_history)
+    val shareHistoryTitle = stringResource(id = R.string.share_history_title)
+    val backButtonDescription = stringResource(id = R.string.back_button_description)
+    val backToHome = stringResource(id = R.string.back_to_home)
+    val getShareMessage = { totalMinutes: Int ->
+        context.getString(R.string.share_history_message, totalMinutes)
+    }
+
     Scaffold(
         topBar = {
             TopBar(
-                title = "Riwayat Belajar",
+                title = historyTitle,
                 showBack = true,
                 onBackClick = { navController.navigate(Screen.Home.route) }
             )
@@ -51,16 +68,16 @@ fun HistoryScreen(navController: NavController, logs: List<StudyLog>) {
         ) {
             if (logs.isEmpty()) {
                 Text(
-                    text = "Belum ada riwayat belajar",
+                    text = noHistory,
                     style = MaterialTheme.typography.bodyMedium,
                     color = colorScheme.onBackground,
                     modifier = Modifier.semantics {
-                        contentDescription = "Belum ada data riwayat belajar yang tersedia"
+                        contentDescription = noHistoryDescription
                     }
                 )
             } else {
                 Text(
-                    text = "Daftar Riwayat Belajar:",
+                    text = historyListTitle,
                     style = MaterialTheme.typography.titleMedium,
                     color = colorScheme.onBackground
                 )
@@ -69,12 +86,17 @@ fun HistoryScreen(navController: NavController, logs: List<StudyLog>) {
                     modifier = Modifier
                         .weight(1f)
                         .semantics {
-                            contentDescription = "Daftar sesi belajar"
+                            contentDescription = historyListDescription
                         }
                 ) {
                     items(logs) { log ->
+                        val logText = stringResource(
+                            id = R.string.date_duration_format,
+                            log.date,
+                            log.durationInMinutes
+                        )
                         Text(
-                            text = "- Tanggal ${log.date}, durasi ${log.durationInMinutes} menit",
+                            text = logText,
                             style = MaterialTheme.typography.bodyMedium,
                             color = colorScheme.onSurface
                         )
@@ -87,27 +109,40 @@ fun HistoryScreen(navController: NavController, logs: List<StudyLog>) {
             Button(
                 onClick = {
                     val total = logs.sumOf { it.durationInMinutes }
+                    val shareMessage = getShareMessage(total)
                     val intent = Intent(Intent.ACTION_SEND).apply {
-                        putExtra(Intent.EXTRA_TEXT, "Total durasi belajar saya adalah $total menit.")
+                        putExtra(Intent.EXTRA_TEXT, shareMessage)
                         type = "text/plain"
                     }
-                    context.startActivity(Intent.createChooser(intent, "Bagikan Riwayat Belajar"))
+                    context.startActivity(
+                        Intent.createChooser(intent, shareHistoryTitle)
+                    )
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "Tombol untuk membagikan riwayat belajar" },
+                    .semantics {
+                        contentDescription = shareHistoryDescription
+                    },
                 colors = ButtonDefaults.buttonColors(containerColor = colorScheme.primary)
             ) {
-                Text("Bagikan Riwayat Belajar", color = colorScheme.onPrimary)
+                Text(
+                    shareHistory,
+                    color = colorScheme.onPrimary
+                )
             }
 
             OutlinedButton(
                 onClick = { navController.navigate(Screen.Home.route) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "Tombol untuk kembali ke layar utama" }
+                    .semantics {
+                        contentDescription = backButtonDescription
+                    }
             ) {
-                Text("Kembali ke Halaman Utama", color = colorScheme.onSurface)
+                Text(
+                    backToHome,
+                    color = colorScheme.onSurface
+                )
             }
         }
     }

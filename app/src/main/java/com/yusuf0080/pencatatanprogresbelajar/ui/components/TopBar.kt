@@ -17,6 +17,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
+import com.yusuf0080.pencatatanprogresbelajar.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,12 +34,12 @@ fun TopBar(
             onDismissRequest = { showDialog = false },
             confirmButton = {
                 TextButton(onClick = { showDialog = false }) {
-                    Text("Tutup")
+                    Text(stringResource(id = R.string.close))
                 }
             },
-            title = { Text("Tentang Aplikasi") },
+            title = { Text(stringResource(id = R.string.about_dialog_title)) },
             text = {
-                Text("Aplikasi ini membantu kamu mencatat dan memantau progres waktu belajar harian serta mingguan.")
+                Text(stringResource(id = R.string.about_dialog_text))
             }
         )
     }
@@ -52,7 +54,7 @@ fun TopBar(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Kembali"
+                            contentDescription = stringResource(id = R.string.back)
                         )
                     }
                 }
@@ -60,7 +62,10 @@ fun TopBar(
         },
         actions = {
             IconButton(onClick = { showDialog = true }) {
-                Icon(imageVector = Icons.Default.Info, contentDescription = "Tentang Aplikasi")
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = stringResource(id = R.string.about_app)
+                )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

@@ -1,11 +1,58 @@
 <resources>
     <string name="app_name">Learning Progress Records</string>
     <string name="stats_title">Weekly Statistics</string>
-    <string name="weekly_progress">Weakly Progress</string>
+    <string name="weekly_progress">Weekly Progress</string>
     <string name="minutes">Minutes</string>
     <string name="weekly_target_label">Weekly Target Label</string>
     <string name="daily_progress">Daily Progress</string>
     <string name="minutes_per_day">Minutes/day</string>
     <string name="daily_target_label">Daily Target Label</string>
     <string name="back_to_home">Back To Home</string>
+
+    <!-- Duration formatting -->
+    <string name="duration_hours_minutes">%1$d hours %2$d minutes</string>
+    <string name="duration_hours">%1$d hours</string>
+    <string name="duration_minutes_seconds">%1$d minutes %2$d seconds</string>
+
+    <!-- History Screen -->
+    <string name="history_title">Learning History</string>
+    <string name="no_history">No learning history yet</string>
+    <string name="no_history_description">No learning history data available</string>
+    <string name="history_list_title">List of Learning History:</string>
+    <string name="history_list_description">List of learning sessions</string>
+    <string name="date_duration_format">- Date %1$s, duration %2$d minutes</string>
+    <string name="share_history">Share Learning History</string>
+    <string name="share_history_description">Button to share learning history</string>
+    <string name="share_history_message">My total learning duration is %1$d minutes.</string>
+    <string name="share_history_title">Share Learning History</string>
+    <string name="back_button_description">Button to return to main screen</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">Learning Progress Tracker</string>
+    <string name="book_open_desc">Open book - learning in progress</string>
+    <string name="book_closed_desc">Closed book - session stopped</string>
+    <string name="duration_format">Learning Duration: %1$s</string>
+    <string name="duration_description">Current learning time: %1$s</string>
+    <string name="start_learning">Start Learning</string>
+    <string name="pause">Pause</string>
+    <string name="reset">Reset</string>
+    <string name="save_session">Save Learning Session</string>
+    <string name="save_session_description">Button to save learning session</string>
+    <string name="session_saved">Learning session saved successfully!</string>
+    <string name="no_duration">No learning duration has been recorded</string>
+    <string name="share_progress">Share Progress</string>
+    <string name="share_progress_description">Button to share learning progress</string>
+    <string name="share_progress_message">Today I studied for %1$s!</string>
+    <string name="share_progress_title">Share learning progress</string>
+    <string name="view_history">View History</string>
+    <string name="view_history_description">Navigate to learning history page</string>
+    <string name="view_stats">View Statistics</string>
+    <string name="view_stats_description">Navigate to learning statistics page</string>
+
+    <!-- TopBar -->
+    <string name="about_dialog_title">About App</string>
+    <string name="about_dialog_text">This app helps you record and monitor your daily and weekly learning time progress.</string>
+    <string name="close">Close</string>
+    <string name="about_app">About App</string>
+    <string name="back">Back</string>
 </resources>

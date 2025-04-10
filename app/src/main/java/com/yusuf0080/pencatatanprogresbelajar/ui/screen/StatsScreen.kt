@@ -16,6 +16,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -45,21 +46,38 @@ fun StatsScreen(
     val progressWeekly = total.toFloat() / weeklyTarget.toFloat()
     val progressDaily = total.toFloat() / dailyTarget.toFloat()
 
-    fun formatDuration(minutes: Int): String {
-        return if (minutes >= 60) {
-            val hours = minutes / 60
-            val remainingMinutes = minutes % 60
-            if (remainingMinutes > 0) "$hours jam $remainingMinutes menit"
-            else "$hours jam"
-        } else {
-            "$minutes menit"
-        }
+    // Pre-load string resources
+    val statsTitle = stringResource(R.string.stats_title)
+    val weeklyProgressText = stringResource(R.string.weekly_progress)
+    val dailyProgressText = stringResource(R.string.daily_progress)
+    val weeklyTargetLabel = stringResource(R.string.weekly_target_label)
+    val dailyTargetLabel = stringResource(R.string.daily_target_label)
+    val backToHomeText = stringResource(R.string.back_to_home)
+    val backButtonDesc = stringResource(R.string.back_button_description)
+    val viewStatsDesc = stringResource(R.string.view_stats_description)
+    val minutesText = stringResource(R.string.minutes)
+
+    // Pre-load duration string formats
+    val durationHoursMinutesFormat = stringResource(R.string.duration_hours_minutes)
+    val durationHoursFormat = stringResource(R.string.duration_hours)
+
+    // Format the durations using the pre-loaded strings
+    val formattedTotalDuration = remember(total) {
+        formatDuration(total, minutesText, durationHoursFormat, durationHoursMinutesFormat)
+    }
+
+    val formattedWeeklyTarget = remember(weeklyTarget) {
+        formatDuration(weeklyTarget, minutesText, durationHoursFormat, durationHoursMinutesFormat)
+    }
+
+    val formattedDailyTarget = remember(dailyTarget) {
+        formatDuration(dailyTarget, minutesText, durationHoursFormat, durationHoursMinutesFormat)
     }
 
     Scaffold(
         topBar = {
             TopBar(
-                title = stringResource(R.string.stats_title),
+                title = statsTitle,
                 showBack = true,
                 onBackClick = { navController.navigate(Screen.Home.route) }
             )
@@ -70,88 +88,118 @@ fun StatsScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(16.dp)
-                .semantics { contentDescription = "Halaman statistik belajar" },
+                .semantics { contentDescription = viewStatsDesc },
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // Weekly progress section
             Text(
-                text = stringResource(R.string.weekly_progress),
+                text = weeklyProgressText,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = colorScheme.onBackground
             )
+
+            val weeklyProgressDesc = remember(progressWeekly) {
+                "$weeklyProgressText: ${(progressWeekly * 100).toInt()}%"
+            }
+
             LinearProgressIndicator(
                 progress = { progressWeekly.coerceIn(0f, 1f) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(10.dp)
-                    .semantics {
-                        contentDescription = "Progress mingguan: ${(progressWeekly * 100).toInt()} persen"
-                    },
+                    .semantics { contentDescription = weeklyProgressDesc },
                 color = colorScheme.primary,
                 trackColor = colorScheme.surfaceVariant
             )
+
             Text(
-                text = "${formatDuration(total)} / ${formatDuration(weeklyTarget)}",
+                text = "$formattedTotalDuration / $formattedWeeklyTarget",
                 color = colorScheme.onSurface
             )
 
             OutlinedTextField(
                 value = weeklyTarget.toString(),
                 onValueChange = { it.toIntOrNull()?.let { value -> viewModel.weeklyTarget = value } },
-                label = { Text(stringResource(R.string.weekly_target_label)) },
+                label = { Text(weeklyTargetLabel) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "Input target menit belajar mingguan" },
+                    .semantics { contentDescription = weeklyTargetLabel },
                 singleLine = true
             )
 
             HorizontalDivider(color = colorScheme.outline)
 
+            // Daily progress section
             Text(
-                text = stringResource(R.string.daily_progress),
+                text = dailyProgressText,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = colorScheme.onBackground
             )
+
+            val dailyProgressDesc = remember(progressDaily) {
+                "$dailyProgressText: ${(progressDaily * 100).toInt()}%"
+            }
+
             LinearProgressIndicator(
                 progress = { progressDaily.coerceIn(0f, 1f) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(10.dp)
-                    .semantics {
-                        contentDescription = "Progress harian: ${(progressDaily * 100).toInt()} persen"
-                    },
+                    .semantics { contentDescription = dailyProgressDesc },
                 color = colorScheme.tertiary,
                 trackColor = colorScheme.surfaceVariant
             )
+
             Text(
-                text = "${formatDuration(total)} / ${formatDuration(dailyTarget)}",
+                text = "$formattedTotalDuration / $formattedDailyTarget",
                 color = colorScheme.onSurface
             )
 
             OutlinedTextField(
                 value = dailyTarget.toString(),
                 onValueChange = { it.toIntOrNull()?.let { value -> viewModel.dailyTarget = value } },
-                label = { Text(stringResource(R.string.daily_target_label)) },
+                label = { Text(dailyTargetLabel) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "Input target menit belajar harian" },
+                    .semantics { contentDescription = dailyTargetLabel },
                 singleLine = true
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Back button
             OutlinedButton(
                 onClick = { navController.navigate(Screen.Home.route) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "Tombol kembali ke halaman utama" }
+                    .semantics { contentDescription = backButtonDesc }
             ) {
                 Text(
-                    text = stringResource(R.string.back_to_home),
+                    text = backToHomeText,
                     color = colorScheme.onSurface
                 )
             }
         }
+    }
+}
+
+private fun formatDuration(
+    minutes: Int,
+    minutesText: String,
+    hoursFormat: String,
+    hoursMinutesFormat: String
+): String {
+    return if (minutes >= 60) {
+        val hours = minutes / 60
+        val remainingMinutes = minutes % 60
+        if (remainingMinutes > 0) {
+            String.format(hoursMinutesFormat, hours, remainingMinutes)
+        } else {
+            String.format(hoursFormat, hours)
+        }
+    } else {
+        "$minutes $minutesText"
     }
 }

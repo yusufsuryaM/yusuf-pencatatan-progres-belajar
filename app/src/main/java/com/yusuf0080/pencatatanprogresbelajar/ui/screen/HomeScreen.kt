@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -24,15 +25,19 @@ import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun formatDurationFull(seconds: Int): String {
+fun formatDurationFull(seconds: Int, context: android.content.Context): String {
     val minutes = seconds / 60
     val remainingSeconds = seconds % 60
     return if (minutes >= 60) {
         val hours = minutes / 60
         val mins = minutes % 60
-        if (mins > 0) "$hours jam $mins menit" else "$hours jam"
+        if (mins > 0) {
+            context.getString(R.string.duration_hours_minutes, hours, mins)
+        } else {
+            context.getString(R.string.duration_hours, hours)
+        }
     } else {
-        "$minutes menit $remainingSeconds detik"
+        context.getString(R.string.duration_minutes_seconds, minutes, remainingSeconds)
     }
 }
 
@@ -42,8 +47,29 @@ fun HomeScreen(navController: NavController, addLog: (StudyLog) -> Unit) {
     var isRunning by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
 
+    // Pre-load string resources
+    val homeTitle = stringResource(id = R.string.home_title)
+    val bookOpenDesc = stringResource(id = R.string.book_open_desc)
+    val bookClosedDesc = stringResource(id = R.string.book_closed_desc)
+    val startLearning = stringResource(id = R.string.start_learning)
+    val pauseText = stringResource(id = R.string.pause)
+    val resetText = stringResource(id = R.string.reset)
+    val saveSession = stringResource(id = R.string.save_session)
+    val sessionSaved = stringResource(id = R.string.session_saved)
+    val noDuration = stringResource(id = R.string.no_duration)
+    val shareProgress = stringResource(id = R.string.share_progress)
+    val viewHistory = stringResource(id = R.string.view_history)
+    val viewStats = stringResource(id = R.string.view_stats)
+    val shareProgressTitle = stringResource(id = R.string.share_progress_title)
+
+    // Content descriptions
+    val saveSessionDescription = stringResource(id = R.string.save_session_description)
+    val shareProgressDescription = stringResource(id = R.string.share_progress_description)
+    val viewHistoryDescription = stringResource(id = R.string.view_history_description)
+    val viewStatsDescription = stringResource(id = R.string.view_stats_description)
+
     val imageRes = if (isRunning) R.drawable.terbuka else R.drawable.tertutup
-    val imageDesc = if (isRunning) "Buku terbuka - sedang belajar" else "Buku tertutup - sesi berhenti"
+    val imageDesc = if (isRunning) bookOpenDesc else bookClosedDesc
 
     LaunchedEffect(isRunning) {
         while (isRunning) {
@@ -54,7 +80,7 @@ fun HomeScreen(navController: NavController, addLog: (StudyLog) -> Unit) {
 
     Scaffold(
         topBar = {
-            TopBar(title = "Pencatatan Progres Belajar")
+            TopBar(title = homeTitle)
         }
     ) { innerPadding ->
 
@@ -74,12 +100,17 @@ fun HomeScreen(navController: NavController, addLog: (StudyLog) -> Unit) {
                     .semantics { contentDescription = imageDesc }
             )
 
+            // Format duration text with context
+            val formattedDuration = formatDurationFull(time, context)
+            val durationText = stringResource(id = R.string.duration_format, formattedDuration)
+            val durationDescription = stringResource(id = R.string.duration_description, formattedDuration)
+
             Text(
-                text = "Durasi Belajar: ${formatDurationFull(time)}",
+                text = durationText,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.semantics {
-                    contentDescription = "Waktu belajar saat ini: ${formatDurationFull(time)}"
+                    contentDescription = durationDescription
                 }
             )
 
@@ -88,14 +119,14 @@ fun HomeScreen(navController: NavController, addLog: (StudyLog) -> Unit) {
                     onClick = { isRunning = true },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF43A047))
                 ) {
-                    Text("Mulai Belajar", color = Color.White)
+                    Text(startLearning, color = Color.White)
                 }
 
                 Button(
                     onClick = { isRunning = false },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFB8C00))
                 ) {
-                    Text("Jeda", color = Color.White)
+                    Text(pauseText, color = Color.White)
                 }
 
                 Button(
@@ -105,7 +136,7 @@ fun HomeScreen(navController: NavController, addLog: (StudyLog) -> Unit) {
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE53935))
                 ) {
-                    Text("Atur Ulang", color = Color.White)
+                    Text(resetText, color = Color.White)
                 }
             }
 
@@ -119,33 +150,38 @@ fun HomeScreen(navController: NavController, addLog: (StudyLog) -> Unit) {
                             durationInMinutes = time / 60
                         )
                         addLog(log)
-                        Toast.makeText(context, "Sesi belajar berhasil disimpan!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, sessionSaved, Toast.LENGTH_SHORT).show()
                         time = 0
                     } else {
-                        Toast.makeText(context, "Belum ada durasi belajar yang dicatat", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, noDuration, Toast.LENGTH_SHORT).show()
                     }
                 },
                 modifier = Modifier
                     .fillMaxWidth(0.7f)
-                    .semantics { contentDescription = "Tombol simpan sesi belajar" },
+                    .semantics { contentDescription = saveSessionDescription },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E88E5))
             ) {
-                Text("Simpan Sesi Belajar", color = Color.White)
+                Text(saveSession, color = Color.White)
+            }
+
+            // Create a function to get the share message
+            val getShareMessage = { currentTime: Int ->
+                context.getString(R.string.share_progress_message, formatDurationFull(currentTime, context))
             }
 
             OutlinedButton(
                 onClick = {
                     val intent = Intent(Intent.ACTION_SEND).apply {
-                        putExtra(Intent.EXTRA_TEXT, "Hari ini saya belajar selama ${formatDurationFull(time)}!")
+                        putExtra(Intent.EXTRA_TEXT, getShareMessage(time))
                         type = "text/plain"
                     }
-                    context.startActivity(Intent.createChooser(intent, "Bagikan progres belajar"))
+                    context.startActivity(Intent.createChooser(intent, shareProgressTitle))
                 },
                 modifier = Modifier
                     .fillMaxWidth(0.7f)
-                    .semantics { contentDescription = "Tombol bagikan progres belajar" }
+                    .semantics { contentDescription = shareProgressDescription }
             ) {
-                Text("Bagikan Progres", color = MaterialTheme.colorScheme.onSurface)
+                Text(shareProgress, color = MaterialTheme.colorScheme.onSurface)
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -157,19 +193,19 @@ fun HomeScreen(navController: NavController, addLog: (StudyLog) -> Unit) {
                 OutlinedButton(
                     onClick = { navController.navigate(Screen.History.route) },
                     modifier = Modifier.semantics {
-                        contentDescription = "Navigasi ke halaman riwayat belajar"
+                        contentDescription = viewHistoryDescription
                     }
                 ) {
-                    Text("Lihat Riwayat", color = MaterialTheme.colorScheme.onSurface)
+                    Text(viewHistory, color = MaterialTheme.colorScheme.onSurface)
                 }
 
                 OutlinedButton(
                     onClick = { navController.navigate(Screen.Stats.route) },
                     modifier = Modifier.semantics {
-                        contentDescription = "Navigasi ke halaman statistik belajar"
+                        contentDescription = viewStatsDescription
                     }
                 ) {
-                    Text("Lihat Statistik", color = MaterialTheme.colorScheme.onSurface)
+                    Text(viewStats, color = MaterialTheme.colorScheme.onSurface)
                 }
             }
         }
