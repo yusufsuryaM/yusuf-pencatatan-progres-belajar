@@ -6,6 +6,6 @@
     <string name="weekly_target_label">Weekly Target Label</string>
     <string name="daily_progress">Daily Progress</string>
     <string name="minutes_per_day">Minutes/day</string>
-    <string name="daily_target_label">Daoly Target Label</string>
+    <string name="daily_target_label">Daily Target Label</string>
     <string name="back_to_home">Back To Home</string>
 </resources>
