@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,8 +38,8 @@ fun formatDurationFull(seconds: Int): String {
 
 @Composable
 fun HomeScreen(navController: NavController, addLog: (StudyLog) -> Unit) {
-    var time by remember { mutableIntStateOf(0) }
-    var isRunning by remember { mutableStateOf(false) }
+    var time by rememberSaveable { mutableIntStateOf(0) }
+    var isRunning by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
 
     val imageRes = if (isRunning) R.drawable.terbuka else R.drawable.tertutup
